@@ -1,3 +1,5 @@
+
+  
 //***Titanic game***
 //try not to die this time
 
@@ -26,7 +28,6 @@ let img_moon;
 // boat --> player
 let img_boat;
 let boatX = 0;
-//find boat center
 let boat_moving = false;
 
 
@@ -58,9 +59,9 @@ function setup() {
   }
   
   //add icebergs
-  icebergs.push(new Iceberg(800, 700, -50, 0, 50, 0, 0, -100, 0.7, 100));
-  icebergs.push(new Iceberg(400, 750, -50, 0, 50, 0, 0, -100, 0.5, 80));
-  icebergs.push(new Iceberg(600, 650, -50, 0, 50, 0, 0, -100, 0.25, 50));
+  icebergs.push(new Iceberg(1200, 500, -50, 0, 50, 0, 0, -100, 0.7, 100));
+  icebergs.push(new Iceberg(400, 550, -50, 0, 50, 0, 0, -100, 0.5, 80));
+  icebergs.push(new Iceberg(600, 600, -50, 0, 50, 0, 0, -100, 0.25, 50));
  
 }
   
@@ -83,8 +84,8 @@ function initWaves() {
 
 function animateWaves() {
   //draw background
-  image(img_waves, waves1X, img_waves.height /2);
-  image(img_waves, waves2X, img_waves.height /2);
+  image(img_waves, waves1X, height /3 );
+  image(img_waves, waves2X, height /3);
 
   waves1X -= wavesSpeed;
 	waves2X -= wavesSpeed;
@@ -145,7 +146,7 @@ class Star {
 }
 }
 
-//class Iceberg woudn't work with help of Stefan Puest
+//class Iceberg and icbergs collisions woudn't work without help of Stefan Puest
 class Iceberg {
   constructor(iceX, iceY, x1, y1, x2, y2, x3, y3, speed, scaleFactor) {
     this.iceX = iceX;
@@ -192,7 +193,9 @@ show() {
 
 function draw() {
   if(icebergsCollision) {
-   
+    wavessound.pause(); 
+    collisionSound.play();
+
   } else {
     let color1 = color(0, 0, 153);
     let color2 = color(0, 96, 255);
@@ -209,9 +212,9 @@ function draw() {
 
 
   //draw moon
-  image(img_moon, width/ 8, height / 8, img_moon.width / 8, img_moon.height / 8);
+  image(img_moon, width/ 8, height / 8);
 
-  // draw random icebergs and make them disapear when outside the screen
+  // // draw random icebergs and make them disapear when outside the screen
   icebergs.forEach((element) => {
   element.move();
 
@@ -230,22 +233,18 @@ function draw() {
     //iceberg hitting the boat from right side
     if(icebergHitX2 > boatHitX1 && icebergHitX2 < boatHitX2 && icebergHitX1 < boatHitX1) {
       icebergsCollision = true;
-      collisionSound.play();
     } 
     //iceberg hitting the boat from left side
     else if (icebergHitX1 < boatHitX2 && icebergHitX1 > boatHitX1 && icebergHitX2 > boatHitX2) {
       icebergsCollision = true;
-      collisionSound.play();
     } 
     //iceberg inside of the boat
     else if (icebergHitX1 < boatHitX1 && icebergHitX2 < boatHitX2) {
       icebergsCollision = true;
-      collisionSound.play();
 
       //iceberg is bigger that the boat, overlapping
     } else if (boatHitX1 > icebergHitX1 && boatHitX2 < icebergHitX2) {
       icebergsCollision = true;
-      collisionSound.play();
     } 
     else {
     icebergsCollision = false;
@@ -259,7 +258,6 @@ function draw() {
 
 
   //boat
-  //image(img_boat, (width/ 2) + boatX, height / 1.5, img_boat.width / 2, img_boat.height /2);
   image(img_boat, boatX + width/4, height / 1.5, img_boat.width / 2, img_boat.height /2)
 
   strokeWeight(5);
@@ -281,6 +279,5 @@ function keyPressed() {
   }
 
 }
-
 
 
